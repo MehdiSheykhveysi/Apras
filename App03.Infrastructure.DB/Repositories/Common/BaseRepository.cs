@@ -47,6 +47,8 @@ namespace App03.Infrastructure.DB.Repositories
             if (Assert.NotNull(entity))
             {
                 Entities.Update(entity);
+                if (_aprasContext.Entry(entity).State == EntityState.Detached)
+                    Attach(entity);
                 await SaveChangesAsync(cancellationToken);
             }
         }
@@ -54,6 +56,8 @@ namespace App03.Infrastructure.DB.Repositories
         {
             if (Assert.NotNull(entity))
             {
+                if (_aprasContext.Entry(entity).State == EntityState.Detached)
+                    Attach(entity);
                 Entities.Remove(entity);
                 await SaveChangesAsync(cancellationToken);
             }

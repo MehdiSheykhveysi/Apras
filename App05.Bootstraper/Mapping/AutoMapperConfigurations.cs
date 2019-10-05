@@ -1,8 +1,5 @@
 ﻿using App05.Bootstraper.Extensions;
 using AutoMapper;
-using System;
-using System.Linq;
-using System.Reflection;
 
 namespace App05.Bootstraper.Mapping
 {

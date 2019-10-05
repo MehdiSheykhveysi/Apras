@@ -31,22 +31,28 @@ namespace Apras.Api.Controllers
         [HttpGet]
         public async Task<ApiResponse<IEnumerable<IPosterPagedDto>>> Get(PaginationInfo pagination, CancellationToken cancellationToken)
         {
-            return Ok(await _posterRepository.GetPagedPosteAsync(pagination.SerackKeyInTitle, pagination, cancellationToken));
+            IEnumerable<IPosterPagedDto> posters = await _posterRepository.GetPagedPosteAsync(pagination.SerackKeyInTitle, pagination, cancellationToken);
+            return Ok(posters);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public async Task<ApiResponse<Poster>> Get(int id, CancellationToken cancellationToken)
         {
-            return "value";
+            Poster requestedPoster = await _posterRepository.GetByIdAsync(id, cancellationToken);
+            return Ok(requestedPoster);
         }
 
         // POST api/Posters
         [HttpPost]
-        public ApiResponse<Poster> Post(AddPosterResource poster, CancellationToken cancellationToken)
+        public ApiResponse<AddPosterResource> Post(AddPosterResource poster, CancellationToken cancellationToken)
         {
             Poster posterMapped = mapper.Mapper.Map<Poster>(poster);
+
+            posterMapped.AppUserId = Guid.NewGuid();//temporary
+
             _posterRepository.AddAsync(posterMapped, cancellationToken);
-            return Ok(posterMapped);
+            return Ok(poster);
+
         }
 
         // PUT api/Posters

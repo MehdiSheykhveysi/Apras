@@ -26,7 +26,11 @@ namespace App03.AppService.Communication
         [JsonConverter(typeof(StringEnumConverter))]
         public EStatusCode StatusCodeString { get; set; }
 
-
+        public static implicit operator ApiResponse(OkResult okResult)
+        {
+            return new ApiResponse(null, EStatusCode.Successed);
+        } 
+        
     }
 
     public class ApiResponse<TResponseData> : ApiResponse where TResponseData : class
@@ -68,6 +72,11 @@ namespace App03.AppService.Communication
         {
             return new ApiResponse<TResponseData>(EStatusCode.BadRequest, (TResponseData)result.Value);
         }
+
+        public static implicit operator ApiResponse<TResponseData>(NoContentResult result)
+        {
+            return new ApiResponse<TResponseData>(EStatusCode.NotContent, null);
+        }
     }
 
     public enum EStatusCode : byte
@@ -88,6 +97,11 @@ namespace App03.AppService.Communication
         BadRequest,
 
         [Display(Description = "دسترسی به این آدرس برای شما مجاز نمیباشد")]
-        AccessDenied
+        AccessDenied,
+        [Display(Description = "تغییرات اعمال نشد")]
+        NotModified,
+
+        [Display(Description = "هیچ منابعی حذف نشد.پارامترهای ارسسالی را بررسی کنید")]
+        NotContent,
     }
 }

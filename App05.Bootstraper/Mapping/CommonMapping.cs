@@ -2,6 +2,7 @@
 using App01.Domain.Entities;
 using App03.Infrastructure.DB.DTOs;
 using AutoMapper;
+using App05.Bootstraper.Resources.Categories;
 
 namespace App05.Bootstraper.Mapping
 {
@@ -11,6 +12,7 @@ namespace App05.Bootstraper.Mapping
         {
             CreateMap<Category, CategoryDTO>();
             CreateMap<AddPosterResource, Poster>();
+            CreateMap<AddCategoryResource, Category>();
         }
     }
 }
